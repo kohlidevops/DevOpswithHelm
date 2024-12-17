@@ -75,3 +75,21 @@ https://bitnami.com/stacks/helm
 3. Cloud Installation using K8's HA Environment
 4. K8's Managed Service Setup (EKS, AKS)
 
+## Install Kubernetes using Minikube
+
+You can refer the following link, to run:
+
+https://github.com/kohlidevops/DevOpsWithKubernetes/blob/main/1%20-%20Minikube/Install-minikube.md
+
+## Install Helm
+
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+helm version
+```
+
+You can refer the following link:
+
+https://helm.sh/docs/intro/install/
