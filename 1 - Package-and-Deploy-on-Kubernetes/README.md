@@ -52,3 +52,26 @@ helm install my-nginx nginx-stable/nginx-ingress --namespace=webapp
   
   ○ Easier rolling back to previous versions of an app
 
+## Helm Charts and Repos
+
+➢ HELM Charts and Repos-
+
+  ○ Helm uses a packaging format called charts.
+
+  ○ Chart is a collection of files that describe a related set of Kubernetes resources.
+
+  ○ User can perform HELM CLI commands on HELM Charts
+
+You can refer
+
+https://helm.sh/
+
+https://bitnami.com/stacks/helm
+
+## Types of Installation
+
+1. Local Installation
+2. Cloud Installation using MiniKube
+3. Cloud Installation using K8's HA Environment
+4. K8's Managed Service Setup (EKS, AKS)
+
