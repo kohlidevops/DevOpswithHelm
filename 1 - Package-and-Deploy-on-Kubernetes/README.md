@@ -214,3 +214,86 @@ helm status my-redis -n redis
 ```
 
 ![image](https://github.com/user-attachments/assets/f4c7f7b3-a1ba-4abd-94e8-8c75c1df7e42)
+
+10. To delete the helm deployment
+
+```
+helm delete my-redis
+helm delete my-redis -n redis
+```
+
+## How to provide custom values to Helm chart
+
+You can refer this link to get the link to helm deploy maria db
+
+https://artifacthub.io/
+
+To deploy a maria db usimg helm
+
+```
+helm install my-mariadb bitnami/mariadb --version 11.4.0
+helm list
+kubectl get pods
+helm status my-mariadb
+
+Administrator credentials:
+
+  Username: root
+  Password : $(kubectl get secret --namespace default my-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 -d)
+
+To execute in the minikube cluster and keep the password in some place
+
+#kubectl get secret --namespace default my-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 -d
+ymRm9Orw9B
+
+To connect to your database:
+
+  1. Run a pod that you can use as a client:
+
+      #kubectl run my-mariadb-client --rm --tty -i --restart='Never' --image  docker.io/bitnami/mariadb:10.6.11-debian-11-r0 --namespace default --command -- bash
+
+  2. To connect to primary service (read/write):
+
+      mysql -h my-mariadb.default.svc.cluster.local -uroot -p my_database
+      >(provide the password)
+      >exit
+
+```
+
+To create a namespace
+
+```
+kubectl create namespace database
+```
+
+To create a MariaDB_CustomValues
+
+```
+nano MariaDb_CustomValues.yaml
+
+https://github.com/kohlidevops/DevOpswithHelm/blob/main/1%20-%20Package-and-Deploy-on-Kubernetes/MariaDb_CustomValues.yaml
+
+helm install -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bitnami/mariadb --version 11.4.0
+kubectl get pods -n database
+helm status my-mariadb -n database
+
+Administrator credentials:
+
+To connect to your database:
+
+  1. Run a pod that you can use as a client:
+
+      #kubectl run my-mariadb-client --rm --tty -i --restart='Never' --image  docker.io/bitnami/mariadb:10.6.11-debian-11-r0 --namespace database --command -- bash
+
+  2. To connect to primary service (read/write):
+
+      #mysql -h my-mariadb.database.svc.cluster.local -uroot -p latchu-helm
+      >(providerootpassword - RootPass1234)
+      >exit
+      #mysql -h my-mariadb.database.svc.cluster.local -ucustom_usr -p latchu-helm
+      >(provideuserpassword - Test1234)
+      >exit
+
+
+
+
