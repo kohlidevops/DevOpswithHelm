@@ -293,6 +293,10 @@ To connect to your database:
       #mysql -h my-mariadb.database.svc.cluster.local -ucustom_usr -p latchu-helm
       >(provideuserpassword - Test1234)
       >exit
+```
+
+## How to upgarde the services using Helm?
+
 
 
 
