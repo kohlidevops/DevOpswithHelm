@@ -189,3 +189,28 @@ kubectl get pods
 ![image](https://github.com/user-attachments/assets/8cf84795-93eb-49f7-867e-9fe9131b014c)
 
 There are multiple pods are running - If you deploy this using manifest yaml, then you need more yaml files to run this. But with Helm, we can achieve this using single command.
+
+8. To install the redis in different namespace
+
+If you list the helm, it will show the redis which is created in default namespace. If you try to create same repo name with different redis version, then you cant. But it is possible in different namespace.
+
+```
+helm list
+helm install my-redis bitnami/redis --version 17.3.11
+kubectl create namespace redis
+helm install -n redis my-redis bitnami/redis --version 17.3.11
+helm list
+helm list -n redis
+```
+
+![image](https://github.com/user-attachments/assets/592a230f-988e-4cde-97c5-55fd6c3a5e8b)
+
+![image](https://github.com/user-attachments/assets/91e037eb-48c8-42de-ba54-a384cb4d5894)
+
+9. To check the status of helm deployment
+
+```
+helm status my-redis -n redis
+```
+
+![image](https://github.com/user-attachments/assets/f4c7f7b3-a1ba-4abd-94e8-8c75c1df7e42)
