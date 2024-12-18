@@ -93,3 +93,99 @@ helm version
 You can refer the following link:
 
 https://helm.sh/docs/intro/install/
+
+## Work with Repos
+
+Chart - It is a Helm package and it contains all of the resource necessary to run an application, tool or service inside of the k8 cluster.
+
+Repository - It is the place where charts can be collected and shared.
+
+Release - It is an instance of chart running in k8 cluster. One chart can often be installed many times into the same cluster and each time it is installed, a new release is created.
+
+## Commands
+
+1. To list the helm repo
+
+```
+helm repo list
+```
+
+2. To add the repo
+
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add brigade https://brigadecore.github.io/charts
+```
+
+3. To remove the heml repo
+
+```
+helm repo remove brigade
+```
+
+4. To search repo
+
+```
+helm search repo mysql
+helm search repo nginx
+```
+
+![image](https://github.com/user-attachments/assets/763a0beb-b9ba-43fe-98fa-520b4415c931)
+
+5. To execute services using Helm
+
+You can use this link to refer
+
+https://artifacthub.io/
+
+```
+helm install my-redis bitnami/redis --version 17.3.9
+
+To get your password run:
+
+    export REDIS_PASSWORD=$(kubectl get secret --namespace default my-redis -o jsonpath="{.data.redis-password}" | base64 -d)
+
+To connect to your Redis&reg; server:
+
+1. Run a Redis&reg; pod that you can use as a client:
+
+   #kubectl run --namespace default redis-client --restart='Never'  --env REDIS_PASSWORD=$REDIS_PASSWORD  --image docker.io/bitnami/redis:7.0.5-debian-11-r15 --command -- sleep infinity
+
+   Use the following command to attach to the pod:
+
+   #kubectl exec --tty -i redis-client \
+   --namespace default -- bash
+
+2. Connect using the Redis&reg; CLI:
+   #REDISCLI_AUTH="$REDIS_PASSWORD" redis-cli -h my-redis-master
+  >SET mykeys "Hello Latchu"
+  >Get mykeys
+  >exit
+  
+   #REDISCLI_AUTH="$REDIS_PASSWORD" redis-cli -h my-redis-replicas
+  >Get mykeys
+
+(optional)
+To connect to your database from outside the cluster execute the following commands:
+
+    kubectl port-forward --namespace default svc/my-redis-master 6379:6379 &
+    REDISCLI_AUTH="$REDIS_PASSWORD" redis-cli -h 127.0.0.1 -p 6379
+```
+
+6. To list the helm
+
+```
+helm list
+```
+
+![image](https://github.com/user-attachments/assets/dc7eca8c-a704-4baf-8122-cd5cec76127b)
+
+7. To check the redis
+
+```
+kubectl get pods
+```
+
+![image](https://github.com/user-attachments/assets/8cf84795-93eb-49f7-867e-9fe9131b014c)
+
+There are multiple pods are running - If you deploy this using manifest yaml, then you need more yaml files to run this. But with Helm, we can achieve this using single command.
