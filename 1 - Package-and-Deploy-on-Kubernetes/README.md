@@ -295,6 +295,8 @@ To connect to your database:
       >exit
 ```
 
+![image](https://github.com/user-attachments/assets/d2bafbd5-cc26-47fb-8df0-484ae24769d8)
+
 ## How to upgarde the services using Helm?
 
 
