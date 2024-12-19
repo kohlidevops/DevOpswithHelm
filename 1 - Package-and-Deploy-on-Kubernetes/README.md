@@ -358,3 +358,11 @@ kubectl get secrets
 
 The history is gone.
 
+To delete the mariabdb deployment which one is available in database namespace and again check the history of secrets and it should be available.
+
+```
+kubectl get secrets
+helm list -A
+helm uninstall --keep-history my-mariadb -n database
+kubectl get secrets -n database
+```
