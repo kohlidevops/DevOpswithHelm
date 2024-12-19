@@ -299,7 +299,62 @@ To connect to your database:
 
 ## How to upgarde the services using Helm?
 
+To list the helm deployment
 
+```
+helm list -A
+```
 
+![image](https://github.com/user-attachments/assets/d8dabf9d-3c76-4182-a7be-a27f0e41e079)
 
+To check the helm deployment status which is deployed in database namespace
+
+```
+helm status my-mariadb -n database
+```
+
+To upgarde the helm deployment with same mariadb version
+
+```
+helm repo update
+//do some changes in MariaDb_CustomValues.yaml like
+//password: "Test12345"
+//username: "custom_usr1"
+helm upgrade -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bitnami/mariadb --version 11.4.0
+kubectl get pods -n database
+helm list -A
+```
+
+We could see that chart revision has been changed
+
+![image](https://github.com/user-attachments/assets/178c9111-96d7-4cf0-978c-5d6bc5b71b99)
+
+To upgarde the helm deployment with different mariadb version
+
+```
+helm upgrade -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bitnami/mariadb --version 11.3.5
+kubectl get pods -n database
+helm list -A
+```
+
+![image](https://github.com/user-attachments/assets/d5bfce64-60e4-44df-ac25-5b67bd59a19e)
+
+We could see that Mariadb version and Revision has been changed.
+
+## How Helm maintain the Release records?
+
+To list the secrets of default namespace and check how the release has been tracked.
+
+Then delete the mariadb deployment which one is available in default namespace and again check the history of secrets
+
+```
+kubectl get secrets
+helm list -A
+helm uninstall my-mariadb
+kubectl get secrets
+```
+
+![image](https://github.com/user-attachments/assets/9928a79a-4041-499a-8eef-083ed78fdf97)
+
+The history is gone.
 
