@@ -366,3 +366,78 @@ helm list -A
 helm uninstall --keep-history my-mariadb -n database
 kubectl get secrets -n database
 ```
+
+## How to validate the resource before helm deployment?
+
+With the help of dry-run command you can validate the resources before helm deployment. Usually Helm will validate the yaml before sending to k8 API server. However, this command will help us to understand the deployment.
+
+```
+helm install -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bitnami/mariadb --version 11.4.0 --dry-run
+```
+
+You could see that status should be Pending, Not deployed. As well this dry-run command will generate the yaml file (But we cant use and deploy this yaml) and it shown in output.
+
+![image](https://github.com/user-attachments/assets/f0926e21-28d5-4976-8236-3bd4b8c6bd26)
+
+## How to generate the K8's deployable YAML using Helm?
+
+You can go with template command, and use the following command, to run:
+
+```
+helm template -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bitnami/mariadb --version 11.4.0
+```
+
+![image](https://github.com/user-attachments/assets/05c84f9b-1d14-4a80-a891-bdeaaf397d4d)
+
+## How to get the details of Helm deployment Releases?
+
+To install the mariadb with version-11.3.4
+
+```
+helm install -n database --values /root/MariaDb_CustomValues.yaml my-mariadb1 bitnami/mariadb --version 11.3.4
+helm list -A
+kubectl get pods -n database
+kubectl get secrets -n database
+```
+
+![image](https://github.com/user-attachments/assets/daeb687a-0238-43d7-a90d-932259cea6a4)
+
+To upgarde the mariadb properties using Helm
+
+Just update the password in MariaDb_CustomValues.yaml
+
+```
+helm upgrade -n database --values /root/MariaDb_CustomValues.yaml my-mariadb1 bitnami/mariadb --version 11.3.4
+helm list -A
+kubectl get pods -n database
+kubectl get secrets -n database
+```
+
+![image](https://github.com/user-attachments/assets/fb177049-e7dc-49d6-828a-f754d1777500)
+
+The revision has been changed now 1 to 2.
+
+To upgrade the mariadb version-11.3.5 using Helm
+
+```
+helm upgrade -n database --values /root/MariaDb_CustomValues.yaml my-mariadb1 bitnami/mariadb --version 11.3.5
+helm list -A
+kubectl get pods -n database
+kubectl get secrets -n database
+```
+
+Now also revision has been changed in secrets and helm list
+
+![image](https://github.com/user-attachments/assets/8f1bcb37-ec2a-4f88-9e90-6ce1dea0b3d8)
+
+To view the secrets as encoded format
+
+```
+kubectl get secrets -n database sh.helm.release.v1.my-mariadb1.v3 -o yaml
+```
+
+![image](https://github.com/user-attachments/assets/df811966-f269-4712-af3a-dfa275edb2b3)
+
+
+
+
