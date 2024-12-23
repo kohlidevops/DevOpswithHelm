@@ -299,7 +299,7 @@ To connect to your database:
 
 ## How to upgarde the services using Helm?
 
-To list the helm deployment
+**To list the helm deployment**
 
 ```
 helm list -A
@@ -307,13 +307,13 @@ helm list -A
 
 ![image](https://github.com/user-attachments/assets/d8dabf9d-3c76-4182-a7be-a27f0e41e079)
 
-To check the helm deployment status which is deployed in database namespace
+**To check the helm deployment status which is deployed in database namespace**
 
 ```
 helm status my-mariadb -n database
 ```
 
-To upgarde the helm deployment with same mariadb version
+**To upgarde the helm deployment with same mariadb version**
 
 ```
 helm repo update
@@ -329,7 +329,7 @@ We could see that chart revision has been changed
 
 ![image](https://github.com/user-attachments/assets/178c9111-96d7-4cf0-978c-5d6bc5b71b99)
 
-To upgarde the helm deployment with different mariadb version
+**To upgarde the helm deployment with different mariadb version**
 
 ```
 helm upgrade -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bitnami/mariadb --version 11.3.5
@@ -391,7 +391,7 @@ helm template -n database --values /root/MariaDb_CustomValues.yaml my-mariadb bi
 
 ## How to get the details of Helm deployment Releases?
 
-To install the mariadb with version-11.3.4
+**To install the mariadb with version-11.3.4**
 
 ```
 helm install -n database --values /root/MariaDb_CustomValues.yaml my-mariadb1 bitnami/mariadb --version 11.3.4
@@ -402,7 +402,7 @@ kubectl get secrets -n database
 
 ![image](https://github.com/user-attachments/assets/daeb687a-0238-43d7-a90d-932259cea6a4)
 
-To upgarde the mariadb properties using Helm
+**To upgarde the mariadb properties using Helm**
 
 Just update the password in MariaDb_CustomValues.yaml
 
@@ -430,7 +430,7 @@ Now also revision has been changed in secrets and helm list
 
 ![image](https://github.com/user-attachments/assets/8f1bcb37-ec2a-4f88-9e90-6ce1dea0b3d8)
 
-To view the secrets as encoded format
+**To view the secrets as encoded format**
 
 ```
 kubectl get secrets -n database sh.helm.release.v1.my-mariadb1.v3 -o yaml
@@ -438,6 +438,118 @@ kubectl get secrets -n database sh.helm.release.v1.my-mariadb1.v3 -o yaml
 
 ![image](https://github.com/user-attachments/assets/df811966-f269-4712-af3a-dfa275edb2b3)
 
+## How to get the details of deployed deployment?
 
+**To list the helm and get the actual release notes of the deployment**
 
+```
+helm list -A
+helm get notes my-mariadb1 -n database
+```
+
+**To get the values of the deployment**
+
+```
+helm list -A
+helm get values my-mariadb1 -n database
+```
+
+![image](https://github.com/user-attachments/assets/9cd5be18-18a3-4ce5-94fc-f059dc6f1d45)
+
+**To get the values of the particular revision**
+
+```
+helm list -A
+helm get values my-mariadb1 -n database --revision 1
+```
+
+![image](https://github.com/user-attachments/assets/0334e662-db34-43c2-b26a-d1669967cc5c)
+
+**To get the all values(manifest) of particular revision**
+
+```
+helm list -A
+helm get manifest my-mariadb1 -n database --revision 2
+```
+
+## How to Rollback Application using the Helm?
+
+**To list the helm and list the history of my deployment**
+
+```
+helm lits -A
+helm history my-mariadb1 -n database
+```
+
+![image](https://github.com/user-attachments/assets/048abfb4-f776-4e43-9208-0d3869453c65)
+
+**To rollback the application**
+
+```
+helm list -A
+helm rollback my-mariadb1 1 -n database
+helm list -A
+helm history my-mariadb1 -n database
+helm get values my-mariadb1 -n database --revision 4
+```
+
+![image](https://github.com/user-attachments/assets/99721023-ca0a-4656-8ce7-f1943edd9bcd)
+
+To uninstall the deployment and keep the history
+
+```
+helm list -A
+helm uninstall -n database my-mariadb1 --keep-history
+helm list -A
+kubectl get secrets -n database
+helm history my-mariadb1 -n database
+```
+
+![image](https://github.com/user-attachments/assets/7cf2b290-9096-4759-bb5d-7c401dc2a7aa)
+
+**To re-install the application using revision number**
+
+```
+helm list -A
+helm rollback my-mariadb1 3 -n database
+helm list -A
+helm history my-mariadb1 -n database
+helm get values my-mariadb1 -n database --revision 5
+```
+
+![image](https://github.com/user-attachments/assets/0867f640-e0c1-4cc3-9282-0a3791b7acf2)
+
+## Wait Helm Deployment for successful Installation
+
+**To install the mysql with wait command**
+
+Default helm wait timeout is 5m, However you can override this values using timeout command
+
+```
+helm install my-mysql bitnami/mysql --version 9.4.4 --wait --timeout 20m
+kubectl get pods
+helm list -A
+```
+
+**To upgrade the mysql version**
+
+```
+helm list -A
+helm upgrade my-mysql bitnami/mysql --version 9.4.2 --wait --timeout 20m
+helm list -A
+```
+
+![image](https://github.com/user-attachments/assets/9318086c-b40b-4ccd-9816-f3f118230c72)
+
+![image](https://github.com/user-attachments/assets/ef034287-9e9c-4439-96f3-7fc145398ab0)
+
+**To rollback the mysql which is previously successful state**
+
+```
+helm list -A
+helm upgrade my-mysql bitnami/mysql --version 9.4.2 --set image.pullPolicy="latchu" --atomic
+helm history my-mysql
+```
+
+![image](https://github.com/user-attachments/assets/1f7759fe-5037-4e7f-ad65-4517dcbdc64e)
 
