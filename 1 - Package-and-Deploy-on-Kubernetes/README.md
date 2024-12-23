@@ -553,3 +553,39 @@ helm history my-mysql
 
 ![image](https://github.com/user-attachments/assets/1f7759fe-5037-4e7f-ad65-4517dcbdc64e)
 
+## How to create a HELM chart?
+
+First clone the following repo, to run:
+
+```
+git clone https://github.com/kohlidevops/HELM.git
+cd HELM
+rm -rf create_charts
+//if this folder available
+mkdir create_charts
+cd create_charts
+helm create my_first_chart
+cd create my_first_chart
+ls -lh
+```
+
+![image](https://github.com/user-attachments/assets/88b6a743-67bf-4679-981b-992639bcb5df)
+
+You can see the tree structure of the helm chart
+
+```
+sudo apt-get install tree -y
+tree my_first_chart/
+```
+
+![image](https://github.com/user-attachments/assets/6d5864ab-e62f-466b-86de-f6dd5a1ce564)
+
+To deploy the custom chart
+
+```
+helm list -A
+helm install custom-deployment my_first_chart/
+helm list -A
+```
+
+To install a custom chart
