@@ -555,7 +555,7 @@ helm history my-mysql
 
 ## How to create a HELM chart?
 
-To create the helm chart
+**To create the helm chart**
 
 ```
 helm create phoenixnap
@@ -564,7 +564,7 @@ tree phoenixnap
 
 ![image](https://github.com/user-attachments/assets/ba474979-0fb8-4fc7-b761-8dda50773060)
 
-To configure the Helm chart
+**To configure the Helm chart**
 
 ```
 nano phoenixnap/values.yaml
@@ -590,7 +590,7 @@ To change the networking service type, locate the service section and change the
 
 ![editing-service-type-helm-chart-update](https://github.com/user-attachments/assets/b02c5275-4d7a-4cb7-a3c0-3531e1d9f1ff)
 
-To install a Helm chart
+**To install a Helm chart**
 
 ```
 helm install phoenix-chart phoenixnap/ --values phoenixnap/values.yaml
@@ -599,11 +599,11 @@ export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].s
 echo http://$NODE_IP:$NODE_PORT
 ```
 
-To view the Deployed Application
+**To view the Deployed Application**
 
 ![output-from-echo-http-node-ip-node-port-helm-chart-update](https://github.com/user-attachments/assets/dd85e451-e2bf-442c-b886-5fe6f18fd9ac)
 
-To package the application and install it again
+**To package the application and install it again**
 
 ```
 helm list -A
