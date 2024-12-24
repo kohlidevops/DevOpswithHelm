@@ -555,37 +555,65 @@ helm history my-mysql
 
 ## How to create a HELM chart?
 
-First clone the following repo, to run:
+To create the helm chart
 
 ```
-git clone https://github.com/kohlidevops/HELM.git
-cd HELM
-rm -rf create_charts
-//if this folder available
-mkdir create_charts
-cd create_charts
-helm create my_first_chart
-cd create my_first_chart
-ls -lh
+helm create phoenixnap
+tree phoenixnap
 ```
 
-![image](https://github.com/user-attachments/assets/88b6a743-67bf-4679-981b-992639bcb5df)
+![image](https://github.com/user-attachments/assets/ba474979-0fb8-4fc7-b761-8dda50773060)
 
-You can see the tree structure of the helm chart
+To configure the Helm chart
 
 ```
-sudo apt-get install tree -y
-tree my_first_chart/
+nano phoenixnap/values.yaml
 ```
 
-![image](https://github.com/user-attachments/assets/6d5864ab-e62f-466b-86de-f6dd5a1ce564)
+Locate the image section
 
-To deploy the custom chart
+![editing-values-yaml-image-section-update](https://github.com/user-attachments/assets/1ed43fb9-aa91-45f0-b7af-43712e848603)
+
+Change the pull policy from IfNotPresent to Always
+
+![editing-values-yaml-pull-policy-section-update](https://github.com/user-attachments/assets/4f90a012-532d-49e2-a82c-a13368b539e9)
+
+To override the chart name in the values.yaml file, add values to nameOverride and fullnameOverride fields.
+
+![editing-name-override-full-name-override-helm-update](https://github.com/user-attachments/assets/71399b95-dd51-4000-af16-44eb3853af0d)
+
+To provide a custom service account name, locate the serviceAccount value in the values.yaml file and specify the name of the service account.
+
+![editing-service-account-name-helm-update](https://github.com/user-attachments/assets/c1ed5a19-3410-4bc3-a929-631280463f1a)
+
+To change the networking service type, locate the service section and change the value in the type field. 
+
+![editing-service-type-helm-chart-update](https://github.com/user-attachments/assets/b02c5275-4d7a-4cb7-a3c0-3531e1d9f1ff)
+
+To install a Helm chart
+
+```
+helm install phoenix-chart phoenixnap/ --values phoenixnap/values.yaml
+export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services phoenix-chart)
+export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+echo http://$NODE_IP:$NODE_PORT
+```
+
+To view the Deployed Application
+
+![output-from-echo-http-node-ip-node-port-helm-chart-update](https://github.com/user-attachments/assets/dd85e451-e2bf-442c-b886-5fe6f18fd9ac)
+
+To package the application and install it again
 
 ```
 helm list -A
-helm install custom-deployment my_first_chart/
+helm uninstall phoenixnap  (remove it if already available)
+helm package phoenixnap/
+helm install phoenix-chart ./phoenixnap-0.1.0.tgz
 helm list -A
+export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services phoenix-chart)
+export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+echo http://$NODE_IP:$NODE_PORT
 ```
 
-To install a custom chart
+![image](https://github.com/user-attachments/assets/bb464c40-d05e-4603-8d52-a1cde8a9fdc7)
